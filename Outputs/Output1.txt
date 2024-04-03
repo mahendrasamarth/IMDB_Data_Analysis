@@ -1,0 +1,317 @@
+SQL> @Query1.txt 
+SQL> SPOOL /Users/srinivasasaiabhijitchallapalli/Output1.txt
+SP2-0606: Cannot create SPOOL file "/Users/srinivasasaiabhijitchallapalli/Output1.txt"
+SQL> COLUMN COLUMN_NAME FORMAT a20
+SQL> SET LINESIZE 200
+SQL> SET UNDERLINE =
+SQL> SET TIMING ON
+SQL> 
+SQL> 
+SQL> --Analysis 1a)
+SQL> SELECT NB.primaryname||','||TB.startyear||','||COUNT(*)
+  2  FROM imdb00.name_basics NB, imdb00.title_principals TP, imdb00.title_basics TB
+  3  WHERE NB.nconst = TP.nconst AND
+  4  		  TP.tconst = TB.tconst AND
+  5  	      NB.nconst IN ('nm0000071','nm0000291','nm0000026','nm0000899') AND
+  6  	      LOWER(TB.titleType) = 'movie' AND
+  7  	      LOWER(TP.category) IN ('actor','actress') AND TB.startyear NOT LIKE '\N'
+  8  GROUP BY NB.nconst, NB.primaryname, TB.startyear
+  9  ORDER BY NB.primaryname;
+
+NB.PRIMARYNAME||','||TB.STARTYEAR||','||COUNT(*)
+========================================================================================================================================================================================================
+Angela Bassett,1992,2
+Angela Bassett,1993,1
+Angela Bassett,1995,3
+Angela Bassett,1998,1
+Angela Bassett,2000,2
+Angela Bassett,2001,1
+Angela Bassett,2002,1
+Angela Bassett,2003,1
+Angela Bassett,2004,2
+Angela Bassett,2006,1
+Angela Bassett,2007,1
+
+NB.PRIMARYNAME||','||TB.STARTYEAR||','||COUNT(*)
+========================================================================================================================================================================================================
+Angela Bassett,2008,4
+Angela Bassett,2009,1
+Angela Bassett,2010,2
+Angela Bassett,2011,1
+Angela Bassett,2013,2
+Angela Bassett,2014,1
+Angela Bassett,2015,1
+Angela Bassett,2016,1
+Angela Bassett,2019,1
+Angela Bassett,2022,1
+Cary Grant,1932,5
+
+NB.PRIMARYNAME||','||TB.STARTYEAR||','||COUNT(*)
+========================================================================================================================================================================================================
+Cary Grant,1933,5
+Cary Grant,1934,4
+Cary Grant,1935,4
+Cary Grant,1936,4
+Cary Grant,1937,4
+Cary Grant,1938,2
+Cary Grant,1939,3
+Cary Grant,1940,4
+Cary Grant,1941,2
+Cary Grant,1942,2
+Cary Grant,1943,3
+
+NB.PRIMARYNAME||','||TB.STARTYEAR||','||COUNT(*)
+========================================================================================================================================================================================================
+Cary Grant,1944,2
+Cary Grant,1946,2
+Cary Grant,1947,2
+Cary Grant,1948,2
+Cary Grant,1949,1
+Cary Grant,1950,1
+Cary Grant,1951,1
+Cary Grant,1952,2
+Cary Grant,1953,1
+Cary Grant,1955,1
+Cary Grant,1957,3
+
+NB.PRIMARYNAME||','||TB.STARTYEAR||','||COUNT(*)
+========================================================================================================================================================================================================
+Cary Grant,1958,2
+Cary Grant,1959,2
+Cary Grant,1960,1
+Cary Grant,1962,1
+Cary Grant,1963,1
+Cary Grant,1964,1
+Cary Grant,1966,1
+James Stewart,1935,1
+James Stewart,1936,4
+James Stewart,1937,3
+James Stewart,1938,4
+
+NB.PRIMARYNAME||','||TB.STARTYEAR||','||COUNT(*)
+========================================================================================================================================================================================================
+James Stewart,1939,5
+James Stewart,1940,4
+James Stewart,1941,3
+James Stewart,1946,1
+James Stewart,1947,1
+James Stewart,1948,4
+James Stewart,1949,2
+James Stewart,1950,4
+James Stewart,1951,1
+James Stewart,1952,3
+James Stewart,1953,2
+
+NB.PRIMARYNAME||','||TB.STARTYEAR||','||COUNT(*)
+========================================================================================================================================================================================================
+James Stewart,1954,3
+James Stewart,1955,2
+James Stewart,1956,1
+James Stewart,1957,2
+James Stewart,1958,2
+James Stewart,1959,2
+James Stewart,1960,1
+James Stewart,1961,1
+James Stewart,1962,3
+James Stewart,1963,1
+James Stewart,1965,3
+
+NB.PRIMARYNAME||','||TB.STARTYEAR||','||COUNT(*)
+========================================================================================================================================================================================================
+James Stewart,1966,1
+James Stewart,1968,2
+James Stewart,1971,1
+James Stewart,1976,1
+James Stewart,1978,1
+James Stewart,1980,1
+James Stewart,1991,1
+Monica Bellucci,1991,1
+Monica Bellucci,1992,1
+Monica Bellucci,1994,2
+Monica Bellucci,1996,2
+
+NB.PRIMARYNAME||','||TB.STARTYEAR||','||COUNT(*)
+========================================================================================================================================================================================================
+Monica Bellucci,1997,2
+Monica Bellucci,1998,2
+Monica Bellucci,1999,3
+Monica Bellucci,2000,2
+Monica Bellucci,2002,2
+Monica Bellucci,2003,2
+Monica Bellucci,2004,3
+Monica Bellucci,2005,2
+Monica Bellucci,2006,2
+Monica Bellucci,2007,3
+Monica Bellucci,2008,2
+
+NB.PRIMARYNAME||','||TB.STARTYEAR||','||COUNT(*)
+========================================================================================================================================================================================================
+Monica Bellucci,2009,1
+Monica Bellucci,2010,1
+Monica Bellucci,2011,2
+Monica Bellucci,2012,1
+Monica Bellucci,2015,1
+Monica Bellucci,2016,1
+Monica Bellucci,2018,1
+Monica Bellucci,2019,1
+Monica Bellucci,2021,1
+Monica Bellucci,2022,2
+
+109 rows selected.
+
+Elapsed: 00:00:03.67
+SQL> 
+SQL> --Analysis 1b)
+SQL> --Disjoint 1 Analysis1b-Dis1
+SQL> SELECT NB.primaryname||','||TB.startyear||','||COUNT(*)
+  2  FROM imdb00.name_basics NB, imdb00.title_principals TP, imdb00.title_basics TB
+  3  WHERE NB.nconst = TP.nconst AND
+  4  		  TP.tconst = TB.tconst AND
+  5  	      NB.nconst IN ('nm0000071','nm0000291','nm0000026','nm0000899') AND
+  6  	      LOWER(TB.titleType) = 'movie' AND
+  7  	      LOWER(TP.category) IN ('actor','actress') AND TB.startyear NOT LIKE '\N' and TB.startyear between '1935' and '1955'
+  8  GROUP BY NB.nconst, NB.primaryname, TB.startyear
+  9  ORDER BY NB.primaryname;
+
+NB.PRIMARYNAME||','||TB.STARTYEAR||','||COUNT(*)
+========================================================================================================================================================================================================
+Cary Grant,1935,4
+Cary Grant,1936,4
+Cary Grant,1937,4
+Cary Grant,1938,2
+Cary Grant,1939,3
+Cary Grant,1940,4
+Cary Grant,1941,2
+Cary Grant,1942,2
+Cary Grant,1943,3
+Cary Grant,1944,2
+Cary Grant,1946,2
+
+NB.PRIMARYNAME||','||TB.STARTYEAR||','||COUNT(*)
+========================================================================================================================================================================================================
+Cary Grant,1947,2
+Cary Grant,1948,2
+Cary Grant,1949,1
+Cary Grant,1950,1
+Cary Grant,1951,1
+Cary Grant,1952,2
+Cary Grant,1953,1
+Cary Grant,1955,1
+James Stewart,1935,1
+James Stewart,1936,4
+James Stewart,1937,3
+
+NB.PRIMARYNAME||','||TB.STARTYEAR||','||COUNT(*)
+========================================================================================================================================================================================================
+James Stewart,1938,4
+James Stewart,1939,5
+James Stewart,1940,4
+James Stewart,1941,3
+James Stewart,1946,1
+James Stewart,1947,1
+James Stewart,1948,4
+James Stewart,1949,2
+James Stewart,1950,4
+James Stewart,1951,1
+James Stewart,1952,3
+
+NB.PRIMARYNAME||','||TB.STARTYEAR||','||COUNT(*)
+========================================================================================================================================================================================================
+James Stewart,1953,2
+James Stewart,1954,3
+James Stewart,1955,2
+
+36 rows selected.
+
+Elapsed: 00:00:03.59
+SQL> 
+SQL> --Analysis1b-Dis2
+SQL> SELECT NB.primaryname||','||TB.startyear||','||COUNT(*)
+  2  FROM imdb00.name_basics NB, imdb00.title_principals TP, imdb00.title_basics TB
+  3  WHERE NB.nconst = TP.nconst AND
+  4  		  TP.tconst = TB.tconst AND
+  5  	      NB.nconst IN ('nm0000071','nm0000291','nm0000026','nm0000899') AND
+  6  	      LOWER(TB.titleType) = 'movie' AND
+  7  	      LOWER(TP.category) IN ('actor','actress') AND TB.startyear NOT LIKE '\N' and TB.startyear between '1956' and '1975'
+  8  GROUP BY NB.nconst, NB.primaryname, TB.startyear
+  9  ORDER BY NB.primaryname;
+
+NB.PRIMARYNAME||','||TB.STARTYEAR||','||COUNT(*)
+========================================================================================================================================================================================================
+Cary Grant,1957,3
+Cary Grant,1958,2
+Cary Grant,1959,2
+Cary Grant,1960,1
+Cary Grant,1962,1
+Cary Grant,1963,1
+Cary Grant,1964,1
+Cary Grant,1966,1
+James Stewart,1956,1
+James Stewart,1957,2
+James Stewart,1958,2
+
+NB.PRIMARYNAME||','||TB.STARTYEAR||','||COUNT(*)
+========================================================================================================================================================================================================
+James Stewart,1959,2
+James Stewart,1960,1
+James Stewart,1961,1
+James Stewart,1962,3
+James Stewart,1963,1
+James Stewart,1965,3
+James Stewart,1966,1
+James Stewart,1968,2
+James Stewart,1971,1
+
+20 rows selected.
+
+Elapsed: 00:00:03.54
+SQL> 
+SQL> --Analysis1b-Dis3
+SQL> SELECT NB.primaryname||','||TB.startyear||','||COUNT(*)
+  2  FROM imdb00.name_basics NB, imdb00.title_principals TP, imdb00.title_basics TB
+  3  WHERE NB.nconst = TP.nconst AND
+  4  		  TP.tconst = TB.tconst AND
+  5  	      NB.nconst IN ('nm0000071','nm0000291','nm0000026','nm0000899') AND
+  6  	      LOWER(TB.titleType) = 'movie' AND
+  7  	      LOWER(TP.category) IN ('actor','actress') AND TB.startyear NOT LIKE '\N' and TB.startyear between '1976' and '1995'
+  8  GROUP BY NB.nconst, NB.primaryname, TB.startyear
+  9  ORDER BY NB.primaryname;
+
+NB.PRIMARYNAME||','||TB.STARTYEAR||','||COUNT(*)
+========================================================================================================================================================================================================
+Angela Bassett,1992,2
+Angela Bassett,1993,1
+Angela Bassett,1995,3
+James Stewart,1976,1
+James Stewart,1978,1
+James Stewart,1980,1
+James Stewart,1991,1
+Monica Bellucci,1991,1
+Monica Bellucci,1992,1
+Monica Bellucci,1994,2
+
+10 rows selected.
+
+Elapsed: 00:00:03.53
+SQL> 
+SQL> --Analysis1b-Dis4
+SQL> SELECT NB.primaryname||','||COUNT(*)
+  2  FROM imdb00.name_basics NB, imdb00.title_principals TP, imdb00.title_basics TB
+  3  WHERE NB.nconst = TP.nconst AND
+  4  		  TP.tconst = TB.tconst AND
+  5  	      NB.nconst IN ('nm0000071','nm0000291','nm0000026','nm0000899') AND
+  6  	      LOWER(TB.titleType) = 'movie' AND
+  7  	      LOWER(TP.category) IN ('actor','actress') AND TB.startyear NOT LIKE '\N' and TB.startyear between '1996' and '2022'
+  8  GROUP BY NB.nconst, NB.primaryname
+  9  ORDER BY NB.primaryname;
+
+NB.PRIMARYNAME||','||COUNT(*)
+========================================================================================================================================================================================================
+Angela Bassett,25
+Monica Bellucci,39
+
+Elapsed: 00:00:03.56
+SQL> 
+SQL> SPOOL OFF
+not spooling currently
+SQL> 

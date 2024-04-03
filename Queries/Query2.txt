@@ -1,0 +1,54 @@
+SET ECHO ON
+SPOOL /home/s/sx/sxc9486/Output2.txt
+COLUMN COLUMN_NAME FORMAT a20
+SET LINESIZE 200
+SET UNDERLINE =
+SET TIMING ON
+
+
+ 
+--Analysis2 
+
+--Query to get maximum movies done by any actor in the range of 1974 and 1983
+SELECT NB.nconst||','||NB.primaryname||','||TP.category||','||COUNT(*)
+FROM imdb00.name_basics NB, imdb00.title_principals TP, imdb00.title_basics TB
+WHERE NB.nconst = TP.nconst AND
+   	     TP.tconst = TB.tconst AND
+         LOWER(TB.titleType) = 'movie' AND
+         LOWER(TP.category) IN ('actor') AND TB.startyear NOT LIKE '\N' and TB.startyear between '1974' and '1983'
+GROUP BY NB.nconst, NB.primaryname,TP.category
+ORDER BY COUNT(*) DESC FETCH FIRST 1 ROW ONLY;
+
+--Query to get maximum movies done by any actress in the range of 1974 and 1983
+SELECT NB.nconst||','||NB.primaryname||','||TP.category||','||COUNT(*)
+FROM imdb00.name_basics NB, imdb00.title_principals TP, imdb00.title_basics TB
+WHERE NB.nconst = TP.nconst AND
+   	     TP.tconst = TB.tconst AND
+         LOWER(TB.titleType) = 'movie' AND
+         LOWER(TP.category) IN ('actress') AND TB.startyear NOT LIKE '\N' and TB.startyear between '1974' and '1983'
+GROUP BY NB.nconst, NB.primaryname,TP.category
+ORDER BY COUNT(*) DESC FETCH FIRST 1 ROW ONLY;
+
+--Query to get minimum (atleast 3) movies done by any actor in the range of 1974 to 1983
+SELECT NB.NCONST||','||NB.primaryname||','||TP.category||','||COUNT(*)
+FROM imdb00.name_basics NB, imdb00.title_principals TP, imdb00.title_basics TB
+WHERE NB.nconst = TP.nconst AND
+   	     TP.tconst = TB.tconst AND
+         LOWER(TB.titleType) = 'movie' AND
+         LOWER(TP.category) IN ('actor') AND TB.startyear NOT LIKE '\N' and TB.startyear between '1974' and '1983'
+GROUP BY NB.nconst, NB.primaryname,TP.category HAVING COUNT(*)=3; 
+--Out of 2096 rows.
+
+--Query to get minimum (atleast 3) movies done by any actress in the range of 1974 to 1983.
+SELECT NB.NCONST||','||NB.primaryname||','||TP.category||','||COUNT(*)
+FROM imdb00.name_basics NB, imdb00.title_principals TP, imdb00.title_basics TB
+WHERE NB.nconst = TP.nconst AND
+   	     TP.tconst = TB.tconst AND
+         LOWER(TB.titleType) = 'movie' AND
+         LOWER(TP.category) IN ('actress') AND TB.startyear NOT LIKE '\N' and TB.startyear between '1974' and '1983'
+GROUP BY NB.nconst, NB.primaryname,TP.category HAVING COUNT(*)=3;
+--Out of 1409 rows.
+
+SPOOL OFF
+
+scp -oKexAlgorithms=+diffie-hellman-group1-sha1 train.txt sxc9486@omega.uta.edu:~/

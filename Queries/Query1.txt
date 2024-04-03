@@ -1,0 +1,70 @@
+
+SET ECHO ON
+SPOOL /Users/srinivasasaiabhijitchallapalli/Output1.txt
+COLUMN COLUMN_NAME FORMAT a20
+SET LINESIZE 200
+SET UNDERLINE =
+SET TIMING ON
+
+
+--Analysis 1a)
+----Query to get actor/actress names and count of movies in the respective years
+SELECT NB.primaryname||','||TB.startyear||','||COUNT(*)
+FROM imdb00.name_basics NB, imdb00.title_principals TP, imdb00.title_basics TB
+WHERE NB.nconst = TP.nconst AND
+   	     TP.tconst = TB.tconst AND
+         NB.nconst IN ('nm0000071','nm0000291','nm0000026','nm0000899') AND
+         LOWER(TB.titleType) = 'movie' AND
+         LOWER(TP.category) IN ('actor','actress') AND TB.startyear NOT LIKE '\N'
+GROUP BY NB.nconst, NB.primaryname, TB.startyear
+ORDER BY NB.primaryname;
+
+--Analysis 1b)
+--Query to get number of movies in each year for the actor/actress in the first disjoint period
+SELECT NB.primaryname||','||TB.startyear||','||COUNT(*)
+FROM imdb00.name_basics NB, imdb00.title_principals TP, imdb00.title_basics TB
+WHERE NB.nconst = TP.nconst AND
+   	     TP.tconst = TB.tconst AND
+         NB.nconst IN ('nm0000071','nm0000291','nm0000026','nm0000899') AND
+         LOWER(TB.titleType) = 'movie' AND
+         LOWER(TP.category) IN ('actor','actress') AND TB.startyear NOT LIKE '\N' and TB.startyear between '1935' and '1955'
+GROUP BY NB.nconst, NB.primaryname, TB.startyear
+ORDER BY NB.primaryname;
+
+--Analysis1b-Dis2
+--Query to get number of movies in each year for the actor/actress in the second disjoint period
+SELECT NB.primaryname||','||TB.startyear||','||COUNT(*)
+FROM imdb00.name_basics NB, imdb00.title_principals TP, imdb00.title_basics TB
+WHERE NB.nconst = TP.nconst AND
+   	     TP.tconst = TB.tconst AND
+         NB.nconst IN ('nm0000071','nm0000291','nm0000026','nm0000899') AND
+         LOWER(TB.titleType) = 'movie' AND
+         LOWER(TP.category) IN ('actor','actress') AND TB.startyear NOT LIKE '\N' and TB.startyear between '1956' and '1975'
+GROUP BY NB.nconst, NB.primaryname, TB.startyear
+ORDER BY NB.primaryname;
+
+--Analysis1b-Dis3
+--Query to get number of movies in each year for the actor/actress in the third disjoint period
+SELECT NB.primaryname||','||TB.startyear||','||COUNT(*)
+FROM imdb00.name_basics NB, imdb00.title_principals TP, imdb00.title_basics TB
+WHERE NB.nconst = TP.nconst AND
+   	     TP.tconst = TB.tconst AND
+         NB.nconst IN ('nm0000071','nm0000291','nm0000026','nm0000899') AND
+         LOWER(TB.titleType) = 'movie' AND
+         LOWER(TP.category) IN ('actor','actress') AND TB.startyear NOT LIKE '\N' and TB.startyear between '1976' and '1995'
+GROUP BY NB.nconst, NB.primaryname, TB.startyear
+ORDER BY NB.primaryname;
+
+--Analysis1b-Dis4
+--Query to get number of movies in each year for the actor/actress in the fourth disjoint period
+SELECT NB.primaryname||','||COUNT(*)
+FROM imdb00.name_basics NB, imdb00.title_principals TP, imdb00.title_basics TB
+WHERE NB.nconst = TP.nconst AND
+   	     TP.tconst = TB.tconst AND
+         NB.nconst IN ('nm0000071','nm0000291','nm0000026','nm0000899') AND
+         LOWER(TB.titleType) = 'movie' AND
+         LOWER(TP.category) IN ('actor','actress') AND TB.startyear NOT LIKE '\N' and TB.startyear between '1996' and '2022'
+GROUP BY NB.nconst, NB.primaryname
+ORDER BY NB.primaryname;
+
+SPOOL OFF
